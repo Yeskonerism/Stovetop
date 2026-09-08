@@ -10,12 +10,16 @@ public class CommandParser
 {
     public static void ParseCommands(string[] args, bool ignoreConfig = false)
     {
+        // Only load config here if it hasn't already been loaded by Initialize
         if (args.Length > 0 && args[0] != "init" && !ignoreConfig)
         {
-            StovetopCore.LoadConfig();
+            if (StovetopCore.StovetopConfig == null)
+            {
+                StovetopCore.LoadConfig();
 
-            if (!StovetopCore.StovetopConfigExists)
-                throw new StovetopNonexistentConfigException();
+                if (!StovetopCore.StovetopConfigExists)
+                    throw new StovetopNonexistentConfigException();
+            }
         }
 
         if (args.Length == 0)

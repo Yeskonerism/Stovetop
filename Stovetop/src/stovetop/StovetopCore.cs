@@ -18,6 +18,7 @@ public static class StovetopCore
     public static string? StovetopRuntime;
 
     public static string? StovetopBackupRoot;
+    public static string? StovetopProfileRoot;
 
     public static bool RunSilent;
     public static bool RunVerbose;
@@ -30,6 +31,7 @@ public static class StovetopCore
         StovetopConfigPath = Path.Combine(StovetopConfigRoot, StovetopConstants.ConfigFileName);
 
         StovetopBackupRoot = Path.Combine(StovetopConfigRoot, StovetopConstants.ConfigBackupFolder);
+        StovetopProfileRoot = Path.Combine(StovetopConfigRoot, StovetopConstants.ConfigProfileFolder);
 
         if (CommandRegistry.CurrentArgs != null)
         {
@@ -37,12 +39,12 @@ public static class StovetopCore
             RunVerbose = CommandRegistry.CurrentArgs.Contains(StovetopConstants.VerboseFlag);
             RunHookless = CommandRegistry.CurrentArgs.Contains(StovetopConstants.NoHooksFlag);
         }
-        
+
         SetupLogger();
 
         if (ignoreConfig)
             return;
-        
+
         if (!VerifyConfig())
         {
             StovetopLogger?.Error("No config found");
@@ -50,6 +52,13 @@ public static class StovetopCore
         }
 
         LoadConfig();
+
+        var profileName = StovetopProfileHandler.GetProfileFlagValue();
+        if (!string.IsNullOrWhiteSpace(profileName))
+        {
+            StovetopProfileHandler.LoadProfile(profileName);
+        }
+
         StovetopRuntime = StovetopConfig?.Runtime;
     }
 

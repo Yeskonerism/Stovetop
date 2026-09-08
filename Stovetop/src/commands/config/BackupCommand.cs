@@ -1,6 +1,5 @@
 using Stovetop.Exceptions;
 using Stovetop.stovetop;
-using Stovetop.stovetop.handlers;
 
 namespace Stovetop.Commands.Config;
 

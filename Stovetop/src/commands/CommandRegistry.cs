@@ -20,7 +20,7 @@ public class CommandRegistry
             "init",
             "Initialize a new project",
             "stove init (runtime)",
-            StovetopCommand.CommandCatagory.Pipeline,
+            StovetopCommand.CommandCatagory.Config,
             InitCommand.Run,
             ["i"]
         );
@@ -179,6 +179,16 @@ public class CommandRegistry
         }
 
         return -1;
+    }
+
+    public static bool HasFlag(string flag)
+    {
+        return CurrentArgs != null && CurrentArgs.Contains(flag);
+    }
+
+    public static bool HasProfileFlag()
+    {
+        return HasFlag("--profile") || HasFlag("-p");
     }
 
     public static string? GetFlagValue(string flag)
